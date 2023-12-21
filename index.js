@@ -52,7 +52,8 @@ const client = new MongoClient(uri, {
 })
 async function run() {
     try {
-        const usersCollection = client.db("StayVisa").collection("users")
+        const usersCollection = client.db("Task-management").collection("user")
+        const newTaskCollection = client.db("Task-management").collection("newtask")
         // auth related api
         app.post('/jwt', async (req, res) => {
             const user = req.body
@@ -70,6 +71,14 @@ async function run() {
                     success: true
                 })
         })
+
+        // newtask post on database start
+        app.post('/newtask', async (req, res) => {
+            const newTaskInfo = req.body;
+            const resuls = await newTaskCollection.insertOne(newTaskInfo)
+            res.send(resuls)
+        })
+
 
         // Logout
         app.get('/logout', async (req, res) => {
@@ -129,9 +138,9 @@ async function run() {
 run().catch(console.dir)
 
 app.get('/', (req, res) => {
-    res.send('Hello from StayVista Server..')
+    res.send('Hello from task management Server..')
 })
 
 app.listen(port, () => {
-    console.log(`StayVista is running on port ${port}`)
+    console.log(`task management is running on port ${port}`)
 })
