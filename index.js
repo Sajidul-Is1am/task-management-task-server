@@ -14,7 +14,7 @@ const port = process.env.PORT || 5000
 
 // middleware
 const corsOptions = {
-    origin: ['http://localhost:5174', 'http://localhost:5175'],
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
     credentials: true,
     optionSuccessStatus: 200,
 }
@@ -109,6 +109,13 @@ async function run() {
             res.send(resuls);
         })
 
+        app.get('/singleTask/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = {_id : new ObjectId(id)}
+            const resuls = await newTaskCollection.findOne(query);
+            res.send(resuls)
+        })
+
 
         // Save or modify user email, status in DB =====================================================
         app.put('/users/:email', async (req, res) => {
@@ -133,6 +140,23 @@ async function run() {
                 options
             )
             res.send(result)
+        })
+        // update task
+        app.patch('/newtask/:id', async (req, res) => {
+            const updateInfo = req.body
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const updateDoc = {
+                $set: {
+                    title: updateInfo.title,
+                    deadlines:updateInfo.deadlines,
+                    descriptions:updateInfo.descriptions,
+                    priyrity:updateInfo.priyrity
+                },
+            };
+            const reuls = await newTaskCollection.updateOne(filter, updateDoc);
+            res.send(reuls)
+            
         })
 
         // delete oparation start====================================================================
