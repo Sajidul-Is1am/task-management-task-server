@@ -80,7 +80,7 @@ async function run() {
         })
 
 
-        // Logout
+        // Logout get oparation start ==================================================================
         app.get('/logout', async (req, res) => {
             try {
                 res
@@ -109,7 +109,7 @@ async function run() {
         })
 
 
-        // Save or modify user email, status in DB
+        // Save or modify user email, status in DB =====================================================
         app.put('/users/:email', async (req, res) => {
             const email = req.params.email
             const user = req.body
@@ -133,6 +133,9 @@ async function run() {
             )
             res.send(result)
         })
+
+        // delete oparation start====================================================================
+
 
         // Send a ping to confirm a successful connection
         await client.db('admin').command({
