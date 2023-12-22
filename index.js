@@ -5,7 +5,8 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const {
     MongoClient,
-    ServerApiVersion
+    ServerApiVersion,
+    ObjectId
 } = require('mongodb')
 const jwt = require('jsonwebtoken')
 // const morgan = require('morgan')
@@ -135,7 +136,14 @@ async function run() {
         })
 
         // delete oparation start====================================================================
-
+        app.delete('/previous/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = {
+                _id: new ObjectId(id)
+            }
+            const resuls = await newTaskCollection.deleteOne(query);
+            res.send(resuls)
+        })
 
         // Send a ping to confirm a successful connection
         await client.db('admin').command({
