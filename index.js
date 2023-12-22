@@ -98,6 +98,17 @@ async function run() {
             }
         })
 
+        // gettting data like previous data
+        app.get('/previous/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = {
+                email: email
+            }
+            const resuls = await newTaskCollection.find(query).toArray();
+            res.send(resuls);
+        })
+
+
         // Save or modify user email, status in DB
         app.put('/users/:email', async (req, res) => {
             const email = req.params.email
